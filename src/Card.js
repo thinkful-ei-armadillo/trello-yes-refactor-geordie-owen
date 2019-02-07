@@ -8,7 +8,8 @@ class Card extends Component {
       <div class="Card">
             <h3>{this.props.title}</h3>
             <p>{this.props.content}</p>
-          </div>
+            <button type="button" onClick=></button>
+      </div>
     )
   }
 }
