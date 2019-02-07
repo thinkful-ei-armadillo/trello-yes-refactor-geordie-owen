@@ -10,31 +10,33 @@ class App extends Component {
     STORE
   }
 
-  deleteCard = (listid, cardIndex) => {
-    
+  deleteCard = (cardIndex) => {
+    let {list, allCards} = this.state.STORE;
+
+    list = list.map(item => item.cardIds.filter((cardId)=> cardId != cardIndex)  )
+
+    delete allCards[cardIndex];
+
     this.setState({
-      STORE: {
-        list: {
-          id,
-          header,
-          cardIds: this.STORE.lists[listid-1].cardIds.filter((item, index) => index !== cardIndex)
-        },
-        allCards
-      }
-    })
-  }
-  
+        STORE: {
+          list,
+          allCards
+        }
+    }
+
 
   addRandomCard = () => {
 
   }
 
   render() {
-    let list = this.props.lists.map((list, index) => {
+    let list = this.state.lists.map((list, index) => {
       let cards = list.cardIds.map(id => {
-        return this.props.allCards[id];
+        return (
+          {letter: id,...this.state.allCards[id]}
+        )
       });
-      return <List header={list.header} cards={cards} index=""></List>;
+      return <List header={list.header} cards={cards} index={index} deleteCard={this.deleteCard}></List>;
     });
 
     return (
