@@ -5,13 +5,12 @@ import { STORE } from './store';
 
 class App extends Component {
   static defaultProps = STORE;
-  
+
   render() {
     let list = this.props.lists.map((list, index) => {
       let cards = list.cardIds.map(id => {
         return this.props.allCards[id];
       });
-
       return <List header={list.header} cards={cards} index=""></List>;
     });
 
