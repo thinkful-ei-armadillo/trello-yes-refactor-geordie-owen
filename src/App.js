@@ -12,9 +12,11 @@ class App extends Component {
 
   deleteCard = (cardIndex) => {
     let {lists, allCards} = this.state.STORE;
-
+    console.log(`cardIndex is: ${cardIndex}`);
     const newLists = lists.map(list => {
-      list.cardIds = list.cardIds.filter(id => id !== cardIndex);
+      list.cardIds = list.cardIds.filter(index => {
+        return index !== cardIndex
+      });
       return list;
     });
 
@@ -28,14 +30,44 @@ class App extends Component {
     })
   }
 
-  addRandomCard = () => {
 
+  
+  addRandomCard = (listId) => {
+    const newRandomCard = () => {
+      const id = Math.random().toString(36).substring(2, 4)
+        + Math.random().toString(36).substring(2, 4);
+      return {
+        id,
+        title: `Random Card ${id}`,
+        content: 'lorem ipsum',
+      }
+    }
+    const random = newRandomCard();
+    let newList = this.state.STORE.lists.map(list => {
+      if(list.id === listId){ 
+        console.log(this.state.STORE.lists[listId].cardIds);
+        console.log(random.id);
+        this.state.STORE.lists[listId-1].cardIds.push(random.id)
+      }
+      return list;
+    })
+
+    const newAllCards = Object.assign(this.state.STORE.allCards, random);
+    console.log(newAllCards);
+    this.setState({
+      lists: newList,
+      allCards: {
+        ...this.state.STORE.allCards,
+        [random.id]: {random}
+      }
+    })
+    
   }
 
   render() {
     let list = this.state.STORE.lists.map((lists, index) => {
-      let cards = lists.cardIds.map(id => STORE.allCards[id]);
-      return <List header={lists.header} cards={cards} key={index} id={index} deleteCard={this.deleteCard}></List>;
+      let cards = lists.cardIds.map(id => Object.assign({}, STORE.allCards[id], { id }));
+      return <List header={lists.header} cards={cards} key={index} lid={lists.id} id={cards.id} deleteCard={this.deleteCard} addRandomCard={this.addRandomCard}></List>;
     });
 
     return (
