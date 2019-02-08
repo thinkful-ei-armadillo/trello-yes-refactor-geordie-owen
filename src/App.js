@@ -43,18 +43,31 @@ class App extends Component {
       }
     }
     const random = newRandomCard();
+    const randomKeys = {
+      title: random.title,
+      content: random.content
+    }
+    const rID = random.id;
+    console.log(randomKeys);
+
     let newList = this.state.STORE.lists.map(list => {
-      if(list.id === listId){
-        console.log(this.state.STORE.lists[listId].cardIds);
-        console.log(random.id);
-        //this.state.STORE.lists[listId-1].cardIds.push(random.id)
+      if(list.id === listId){ 
+        this.state.STORE.lists[listId-1].cardIds.push(random.id)
       }
       return list;
     })
 
-    const newAllCards = Object.assign(this.state.STORE.allCards, {[random.id]:random});
-    console.log(newAllCards);
+    this.setState({
+      lists: newList,
+      allCards: {
+        rID: randomKeys,
+        ...this.state.STORE.allCards
+        
+      }
+    })
 
+    console.log(this.state.STORE.allCards);
+    
   }
 
   render() {
