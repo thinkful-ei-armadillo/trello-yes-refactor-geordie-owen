@@ -5,7 +5,7 @@ import Card from './Card';
 class List extends Component {
 handleRandomCard = () => {
   this.props.addRandomCard(this.props.lid);
-  console.log(this.props.lid)
+  // console.log(this.props.lid)
 }
 
   render() {

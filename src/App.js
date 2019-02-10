@@ -12,7 +12,7 @@ class App extends Component {
 
   deleteCard = (cardIndex) => {
     let {lists, allCards} = this.state.STORE;
-    console.log(`cardIndex is: ${cardIndex}`);
+    // console.log(`cardIndex is: ${cardIndex}`);
     const newLists = lists.map(list => {
       list.cardIds = list.cardIds.filter(index => {
         return index !== cardIndex
@@ -42,17 +42,18 @@ class App extends Component {
         content: 'lorem ipsum',
       }
     }
-    const random = newRandomCard();
-    const randomKeys = {
-      title: random.title,
-      content: random.content
-    }
-    const rID = random.id;
-    console.log(randomKeys);
+    const newCard = newRandomCard();
+    // const randomKeys = {
+    //   title: random.title,
+    //   content: random.content
+    // }
+    // const rID = random.id;
+    // console.log(randomKeys);
 
     let newList = this.state.STORE.lists.map(list => {
-      if(list.id === listId){ 
-        this.state.STORE.lists[listId-1].cardIds.push(random.id)
+      if(list.id === listId){
+
+        // this.state.STORE.lists[listId-1].cardIds.push(random.id)
       }
       return list;
     })
@@ -60,10 +61,8 @@ class App extends Component {
     this.setState({
       lists: newList,
       allCards: {
-        rID: randomKeys,
-        ...this.state.STORE.allCards
-        
-      }
+        [newCard.id]: newCard,
+        ...this.state.STORE.allCards}
     })
 
     console.log(this.state.STORE.allCards);
@@ -73,6 +72,7 @@ class App extends Component {
   render() {
     let list = this.state.STORE.lists.map((lists, index) => {
       let cards = lists.cardIds.map(id => Object.assign({}, STORE.allCards[id], { id }));
+      console.log(`this list has ${cards.length} cards`);
       return <List header={lists.header} cards={cards} key={index} lid={lists.id} id={cards.id} deleteCard={this.deleteCard} addRandomCard={this.addRandomCard}></List>;
     });
 
