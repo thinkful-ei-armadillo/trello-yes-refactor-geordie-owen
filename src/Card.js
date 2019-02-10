@@ -4,8 +4,8 @@ import './Card.css';
 class Card extends Component {
   handleDelete = () => {
     this.props.deleteCard(this.props.id);
-    console.log(this.props.id);
-    console.log('delete pressed');
+    // console.log(this.props.id);
+    // console.log('delete pressed');
   }
 
   render() {

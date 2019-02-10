@@ -50,29 +50,34 @@ class App extends Component {
     // const rID = random.id;
     // console.log(randomKeys);
 
-    let newList = this.state.STORE.lists.map(list => {
-      if(list.id === listId){
+    let newLists = this.state.STORE.lists
 
+    newLists.map(list => {
+      if(list.id === listId){
+        list.cardIds.push(newCard.id)
         // this.state.STORE.lists[listId-1].cardIds.push(random.id)
       }
       return list;
     })
+    
+    let newAllCards = this.state.STORE.allCards;
+    Object.assign(newAllCards, {[newCard.id]: newCard});
+
 
     this.setState({
-      lists: newList,
-      allCards: {
-        [newCard.id]: newCard,
-        ...this.state.STORE.allCards}
+      lists: newLists,
+      allCards: newAllCards
     })
-
+    //check if the newCard has been added to registry of ids
     console.log(this.state.STORE.allCards);
     
   }
 
   render() {
     let list = this.state.STORE.lists.map((lists, index) => {
-      let cards = lists.cardIds.map(id => Object.assign({}, STORE.allCards[id], { id }));
-      console.log(`this list has ${cards.length} cards`);
+      let cards = lists.cardIds.map(id => Object.assign({}, this.state.STORE.allCards[id], { id }));
+      console.log(`this list has ${cards.length} cards`); //check to see if card is being added to correct list
+      console.log(`cards.id is ${cards.id}`)
       return <List header={lists.header} cards={cards} key={index} lid={lists.id} id={cards.id} deleteCard={this.deleteCard} addRandomCard={this.addRandomCard}></List>;
     });
 
